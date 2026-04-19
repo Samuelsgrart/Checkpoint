@@ -1,28 +1,13 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
 
-function loadEnv($path) {
-    if (!file_exists($path)) return;
-    $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-    foreach ($lines as $line) {
-        if (strpos(trim($line), '#') === 0) continue;
-        list($name, $value) = explode('=', $line, 2);
-        $_ENV[trim($name)] = trim($value);
-    }
-}
+$client_id = getenv('TWITCH_CLIENT_ID') ?: $_ENV['TWITCH_CLIENT_ID'];
+$client_secret = getenv('TWITCH_CLIENT_SECRET') ?: $_ENV['TWITCH_CLIENT_SECRET'];
 
-
-loadEnv(__DIR__ . '/clave.env'); 
-
-
-$client_id = $_ENV['TWITCH_CLIENT_ID'];
-$client_secret = $_ENV['TWITCH_CLIENT_SECRET'];
-
-
-$host = $_ENV['DB_HOST'];
-$user = $_ENV['DB_USER'];
-$pass = $_ENV['DB_PASS'];
-$name = $_ENV['DB_NAME'];
+$host = getenv('DB_HOST') ?: $_ENV['DB_HOST'];
+$user = getenv('DB_USER') ?: $_ENV['DB_USER'];
+$pass = getenv('DB_PASS') ?: $_ENV['DB_PASS'];
+$name = getenv('DB_NAME') ?: $_ENV['DB_NAME'];
 
 //API
 function consultarAPI($endpoint, $query) {
